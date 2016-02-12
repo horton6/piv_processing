@@ -15,8 +15,8 @@ I2 = csvreadfile(ifname);
 % Noise filters
 
 % use 6th order butterworth filter to remove noise
-f_c = 0.6; % cutoff frequency
-I2 = butterworth_noise_filter(I2,f_c);
+% f_c = 0.9; % cutoff frequency
+% I2 = butterworth_noise_filter(I2,f_c);
 I3 = gpuArray(I2);
 % % increase contrast using linear function
 % threshold = 2e3;
@@ -31,7 +31,7 @@ t_max = 25e3;
 I3 = imadjust(I3,[t_min/t_range;t_max/t_range],[0;1]);
 
 % create binary
-I_bin = I3 > t_min;
+I_bin = I3 > 1800;
 
 
 % Detect edges and fill to create binary image
@@ -52,7 +52,7 @@ I_bin = I3 > t_min;
 [stats] = process_image(I_bin, I3);
 
 % Filter particles less than 0.5px
-p_min = 0.5;  % px
+p_min = 0.25;  % px
 p_max = 20;   % px
 [stats] = filter_pixel_size(stats, p_min, p_max);
 
